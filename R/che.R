@@ -14,8 +14,8 @@ runCHE <- function(j){
     VarX <- paste0("bio", i)
     VarY <- paste0("bio", j)
 
-    if (i < 10) {VarX <- paste0("bio0", i)}
-    if (j < 10) {VarY <- paste0("bio0", j)}
+    # if (i < 10) {VarX <- paste0("bio0", i)}
+    # if (j < 10) {VarY <- paste0("bio0", j)}
 
     predict.to.spp <- stack(predict.to[[VarX]], predict.to[[VarY]])
 
