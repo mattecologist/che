@@ -1,12 +1,12 @@
 Package: che
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Convex Hull Ensembles for Species Distribution Modelling
 Version: 0.1.0
-Author: Who wrote it
+Authors@R: person("Matt", "Hill", email="matthill@protonmail.com", role=c("aut", "cre"))
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: Species Distribution Modelling functions with an emphasis on predictor selection and transferability.
+    Includes functions for data preparation.
+License: CC0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
