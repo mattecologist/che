@@ -1,6 +1,6 @@
 #' Background Builder for Species Distribution Modelling
 #'
-#'
+#' Before this function is used you'll need to load wrld_simply
 #' @param distrib Distribution data with "Longitude" and "Latitude" colnames
 #' @param terres The terrestrial biomes layer from Olson et al.
 #' @param wrld_simpl The simple country/ continent boundaries from maptools
@@ -52,6 +52,26 @@ background_builder <- function(distrib=distrib,
   dist_ras <- trim(dist_ras)
 
   return (dist_ras)
+}
+
+#' Background weighting function
+#'
+#' @param bg_ras The background raster to sample across
+#' @param weight The value for background cells
+#' @param spp.data The presence data - must include a column of 0/1 for presence background samples
+#' @return who knows
+#' @export
+
+bg_weighting <- function(bg_ras=bg_ras,
+                         weight=1.e-6,
+                         spp.data=spp.data){
+  cell_size<-area(bg_ras, na.rm=TRUE, weights=FALSE)
+  cell_size<-cell_size[!is.na(cell_size)]
+  raster_area<-length(cell_size)*median(cell_size)
+  back.area <- raster_area
+  w <- rep(weight, nrow(spp.data))
+  w[spp.data$pbg.which ==0] <- back.area / sum(spp.data$pbg.which == 0)
+  return (w)
 }
 
 

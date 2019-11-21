@@ -21,3 +21,9 @@ A \code{list} of length \code{v} containing the individual models
 \description{
 Basic version of the range bagging algorithm
 }
+\references{
+Drake, J. M. (2015). Range bagging: a new method for ecological niche modelling from presence-only data. Journal of The Royal Society Interface, 12(107):20150086
+}
+\author{
+John Drake
+}

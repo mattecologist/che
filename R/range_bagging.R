@@ -7,6 +7,8 @@
 #' @param d dimension of ranges to bag
 #' @param bioclim Flag to indicate whether to select 1 precipitation and 1 temperature variable at at time
 #' @return A \code{list} of length \code{v} containing the individual models
+#' @author John Drake
+#' @references Drake, J. M. (2015). Range bagging: a new method for ecological niche modelling from presence-only data. Journal of The Royal Society Interface, 12(107):20150086
 #' @export
 
 rb <- function(x, v=100, d=1, p=0.5, bioclim=TRUE){
@@ -46,6 +48,8 @@ rb <- function(x, v=100, d=1, p=0.5, bioclim=TRUE){
 #' @param models a list of models returned by function rb
 #' @param x.new covariate data at new points
 #' @return A \code{list} of length \code{v} containing the individual models
+#' @author John Drake
+#' @references Drake, J. M. (2015). Range bagging: a new method for ecological niche modelling from presence-only data. Journal of The Royal Society Interface, 12(107):20150086
 #' @export
 
 rb.test <- function(models, x.new){

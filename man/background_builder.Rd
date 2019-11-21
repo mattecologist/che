@@ -27,5 +27,5 @@ background_builder(
 A \code{raster} file that can be used for sampling background
 }
 \description{
-Background Builder for Species Distribution Modelling
+Before this function is used you'll need to load wrld_simply
 }
