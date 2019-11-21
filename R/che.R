@@ -63,3 +63,20 @@ runCHE <- function(j){
 
   test <- list (convStack, varsStack, AUC.result)
 }
+
+#' Stacking function for che outputs
+#'
+#' @param stackoflayers Raster layers of che results
+#' @param keep_layers Vector of layer names to keep
+#'
+#' @return A single layer
+#' @export
+
+sum.stack <- function(stackoflayers, keep_layers=keep_layers){
+  x <- stack()
+  for (i in keep_layers){
+    x <- stack(x, stackoflayers[[i]])
+  }
+  x <- sum(x)/nlayers(x)
+  return (x)
+}
