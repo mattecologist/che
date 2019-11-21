@@ -2,8 +2,7 @@
 % Please edit documentation in R/range_bagging.R
 \name{rb.test}
 \alias{rb.test}
-\title{Range Bagging prediction
-Test function for a point to determine the fraction of bags in which the point falls}
+\title{Range Bagging prediction}
 \usage{
 rb.test(models, x.new)
 }
@@ -16,6 +15,5 @@ rb.test(models, x.new)
 A \code{list} of length \code{v} containing the individual models
 }
 \description{
-Range Bagging prediction
 Test function for a point to determine the fraction of bags in which the point falls
 }

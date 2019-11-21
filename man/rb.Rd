@@ -2,8 +2,7 @@
 % Please edit documentation in R/range_bagging.R
 \name{rb}
 \alias{rb}
-\title{Range Bagging
-Basic version of the range bagging algorithm}
+\title{Range Bagging algorithm for Species Distribution Modelling}
 \usage{
 rb(x, v = 100, d = 1, p = 0.5, bioclim = TRUE)
 }
@@ -20,6 +19,5 @@ rb(x, v = 100, d = 1, p = 0.5, bioclim = TRUE)
 A \code{list} of length \code{v} containing the individual models
 }
 \description{
-Range Bagging
 Basic version of the range bagging algorithm
 }

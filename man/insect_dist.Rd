@@ -19,6 +19,9 @@
 insect_dist
 }
 \description{
-A dataset containing the native and invasive distributions for 22 insect species
+A dataset containing the native and invasive distributions for 22 insect species.
+}
+\references{
+Hill MP, Gallardo B, Terblanche JS (2017) A global assessment of climatic niche shifts, and human influence, in insect invasions Global Ecology & Biogeography 26, 679-689
 }
 \keyword{datasets}

@@ -1,4 +1,5 @@
-#' Range Bagging
+#' Range Bagging algorithm for Species Distribution Modelling
+#'
 #' Basic version of the range bagging algorithm
 #'
 #' @param x covariate data at observations
@@ -9,7 +10,7 @@
 #' @export
 
 rb <- function(x, v=100, d=1, p=0.5, bioclim=TRUE){
-  require(geometry)
+ # require(geometry)
   models <- list()
   n <- dim(x)
   for(i in 1:v){
@@ -39,6 +40,7 @@ rb <- function(x, v=100, d=1, p=0.5, bioclim=TRUE){
 
 
 #' Range Bagging prediction
+#'
 #' Test function for a point to determine the fraction of bags in which the point falls
 #'
 #' @param models a list of models returned by function rb
