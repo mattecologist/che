@@ -36,11 +36,11 @@ data("wrld_simpl")
 
 
 # biomes available here
-# temp <- tempfile()
-# download.file("https://c402277.ssl.cf1.rackcdn.com/publications/15/files/original/official_teow.zip",temp)
-# unzip(temp)
-# unlink(temp)
-# terres <- readShapePoly("official/wwf_terr_ecos.shp")
+temp <- tempfile()
+download.file("https://c402277.ssl.cf1.rackcdn.com/publications/15/files/original/official_teow.zip",temp)
+unzip(temp)
+unlink(temp)
+terres <- readShapePoly("official/wwf_terr_ecos.shp")
 
 
 #setwd for project (output directory for raster dump etc)
