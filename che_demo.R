@@ -1,26 +1,25 @@
 ## Working example of using Convex Hull Ensembles and range bagging with the {che} package
 ## Matt Hill 2019
 
-# this library is on my github
+
 library (che)
-# this data is the in the {che} package - will implement neater soon....
-load("data/insect_dist.Rdata")
-load("data/terres.Rdata")
 
-
+# other libraries....
 library (raster)
 library (maptools)
 library (rgeos)
 
+# this data is the in the {che} package - will implement neater soon....
+load("data/insect_dist.Rdata")
+
+## Bioclim data
 bioclimall <- raster::getData('worldclim', var='bio', res=2.5)
 
-
+## Native range for this species is South Africa
 e <- extent (10, 40, -35, -15)
 SAfrica <- crop (bioclimall, e)
 #convert to a stack
 SAfrica <- stack(unstack(SAfrica))
-
-
 
 
 dist <- insect_dist[insect_dist$Species =="h_destructor" & insect_dist$Range == "Native",]
@@ -43,15 +42,15 @@ unlink(temp)
 terres <- readShapePoly("official/wwf_terr_ecos.shp")
 
 
-#setwd for project (output directory for raster dump etc)
-dir.create("output")
-wd = "./output/"; setwd(wd)
+# #setwd for project (output directory for raster dump etc)
+# dir.create("output")
+# wd = "./output/"; setwd(wd)
 
 clim <- cbind(as.data.frame(dist[,c("Longitude", "Latitude")]),raster::extract(SAfrica, as.data.frame(dist[,c("Longitude", "Latitude")])))
 #clim <- dplyr::rename(clim, "Longitude"="Long", "Latitude"="Lat")
 
 
-# Uses the background builder script to set up sampling environment
+# Uses the background builder function to set up sampling environment
 nat_ras <- background_builder(clim, terres, wrld_simpl, ref_rast = bioclimall[[1]])
 
 
