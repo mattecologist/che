@@ -35,6 +35,25 @@ Species distribution models (SDMs) have become increasingly popular to predict t
 Here we introduce methods to finesse this problem by using multiple simple models to search for the most appropriate variables from a given set, and then apply them as two variable envelopes in an ensemble approach. This is in the 
 `che` function of this package. We also include modified approaches using `bioclim` variables and `range bagging`.
 
+![alt text here](man/figures/report_schematic.png)
+Schematic of new ensemble modelling technique.
+A
+. Variable pairs of temperature and
+precipitation  using  the  bioclim  variable  are  used  in  simple  GAMs  and  then  assessed  for  relative
+model fit using AUC (and other metrics, see text).  Green squares are the pairs kept, red squares with
+crosses are omitted.
+B
+. The variable pairs selected are used to create two-dimensional environmental
+envelopes capturing all the presence points (green points) inside all available environments (green
++ orange points), using a minimum convex polygon (convex hulls (CHE)), or by use of bounding
+boxes defined through the BIOCLIM algorithm (BBE).
+C
+. Each of the two-variable envelopes from
+B are projected to a new geographical surface (as a gridded raster) and then stacked (summed.  The
+results are then averaged, and the resulting surface is a continuous scale from 0-1 reflecting the level
+of certainty (closer to 1) that a given raster cell falls in the environmental limits across the given
+predictor variables.
+
 ## Example
 
 There will soon be a vignette demonstrating use of this package
