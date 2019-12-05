@@ -28,27 +28,15 @@ You can install the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("mattecologist/che")
 ```
+## Background
+
+Species distribution models (SDMs) have become increasingly popular to predict the potential geographic range of invasive species, by correlating the known distribution of a species with environmental variables, and transferring these relationships into novel environments and geographic space. The SDM literature has largely focused on improving the statistical fit of models when projecting into novel geographic space. Specifically, by understanding how background size and extent may influence model transferability, and how best to select absence, pseudo-absence or background points for modelling. These investigations are coupled with considerable examination of how model evaluation methods and test scores are influenced by these choices. An area that remains challenging and under-discussed is methods to choose predictive variables that will result in models that transfer between regions. This is challenging as non-causal variables may still show significant associations with distributions.
+
+Here we introduce methods to finesse this problem by using multiple simple models to search for the most appropriate variables from a given set, and then apply them as two variable envelopes in an ensemble approach. This is in the 
+`che` function of this package. We also include modified approaches using `bioclim` variables and `range bagging`.
+
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+There will soon be a vignette demonstrating use of this package
 
-```{r example}
-library(che)
-## basic example code
-```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
