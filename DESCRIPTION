@@ -14,3 +14,7 @@ Imports:
     geometry,
     raster,
     mgcv
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
