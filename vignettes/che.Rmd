@@ -34,7 +34,7 @@ load("../data/insect_dist.Rdata")
 bioclimall <- raster::getData('worldclim', var='bio', res=2.5)
 ```
 
-## Native range for this species is South Africa
+## Native range for this species is South Africad
 ```{r}
 e <- extent (10, 40, -35, -15)
 SAfrica <- crop (bioclimall, e)
