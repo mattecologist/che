@@ -22,6 +22,9 @@ library(che)
 library (raster)
 library (maptools)
 library (rgeos)
+
+# simple worl outline from maptools package
+data("wrld_simpl")
 ```
 
 ## this data is the in the `che` package - will implement neater soon....
@@ -33,8 +36,20 @@ load("../data/insect_dist.Rdata")
 ```{r}
 bioclimall <- raster::getData('worldclim', var='bio', res=2.5)
 ```
+## Species data
 
-## Native range for this species is South Africad
+# Halotydeus destructor
+```{r}
+dist <- insect_dist[insect_dist$Species =="h_destructor" & insect_dist$Range == "Native",]
+
+sp_df <- cbind(as.data.frame(dist[,c("Longitude", "Latitude")]),raster::extract(SAfrica, as.data.frame(dist[,c("Longitude", "Latitude")])))
+plot (SAfrica[[1]])
+points(as.data.frame(dist[,c("Longitude", "Latitude")]), pch=20)
+```
+
+# Background creation
+
+## Native range for this species is South Africa
 ```{r}
 e <- extent (10, 40, -35, -15)
 SAfrica <- crop (bioclimall, e)
@@ -42,11 +57,31 @@ SAfrica <- crop (bioclimall, e)
 SAfrica <- stack(unstack(SAfrica))
 ```
 
-```{r}
-dist <- insect_dist[insect_dist$Species =="h_destructor" & insect_dist$Range == "Native",]
+## Biomes
 
-sp_df <- cbind(as.data.frame(dist[,c("Longitude", "Latitude")]),raster::extract(SAfrica, as.data.frame(dist[,c("Longitude", "Latitude")])))
-plot (SAfrica[[1]])
-points(as.data.frame(dist[,c("Longitude", "Latitude")]), pch=20)
+The biomes are available as a 
+```{r}
+# biomes available here
+
+if (!file.exists("official/wwf_terr_ecos.shp")){
+  temp <- tempfile()
+  download.file("https://c402277.ssl.cf1.rackcdn.com/publications/15/files/original/official_teow.zip",temp)
+  unzip(temp)
+  unlink(temp)
+}
+terres <- readShapePoly("official/wwf_terr_ecos.shp")
+```
+
+
+## Create a raster using biomes and native range points
+
+Create background using `che::background_builder`
+
+```{r}
+clim <- cbind(as.data.frame(dist[,c("Longitude", "Latitude")]),raster::extract(SAfrica, as.data.frame(dist[,c("Longitude", "Latitude")])))
+
+
+# Uses the background builder function to set up sampling environment
+nat_ras <- background_builder(clim, terres, wrld_simpl, ref_rast = bioclimall[[1]])
 ```
 
