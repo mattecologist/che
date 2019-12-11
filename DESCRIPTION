@@ -13,7 +13,11 @@ RoxygenNote: 7.0.0
 Imports: 
     geometry,
     raster,
-    mgcv
+    mgcv,
+    methods,
+    AUC,
+    dismo,
+    parallel
 Suggests: 
     knitr,
     rmarkdown

@@ -1,6 +1,6 @@
 #' Convex Hull Ensembles
 #'
-#'
+#' Core function for 
 #' @param j Counter for bioclim raster position
 #' @return A \code{list} comprising two stacks of rasters
 #' @export
@@ -68,7 +68,6 @@ runCHE <- function(j){
 #'
 #' @param stackoflayers Raster layers of che results
 #' @param keep_layers Vector of layer names to keep
-#'
 #' @return A single layer
 #' @export
 
@@ -88,8 +87,7 @@ sum_stack <- function(stackoflayers, keep_layers=keep_layers){
 #' @param predict.to Raster stack where the model will be predicted/ projected to
 #' @param spp.dist X & Y species points
 #' @param w.val Weighting value for background
-#' @param bg.sample Size of background samples (defaul 50000)
-#'
+#' @param bg.sample Size of background samples (default 50000)
 #' @return A list of data objects to be used with che model.
 #' @export
 

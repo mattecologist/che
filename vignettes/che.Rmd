@@ -81,7 +81,10 @@ Using the `che::background_builder` function to set up sampling environment
 ```{r fig.width= 5, fig.height=5}
 clim <- cbind(as.data.frame(dist[,c("Longitude", "Latitude")]),raster::extract(SAfrica, as.data.frame(dist[,c("Longitude", "Latitude")])))
 
-nat_ras <- background_builder(clim, terres, wrld_simpl, ref_rast = bioclimall[[1]])
+nat_ras <- background_builder(distrib=clim, 
+                              terres=terres,
+                              wrld_simpl= wrld_simpl, 
+                              ref_rast = bioclimall[[1]])
 
 plot (nat_ras)
 ```
@@ -96,9 +99,7 @@ model.data <- prepare_data(rasters=bioclimall, mask_raster=nat_ras, predict.to=S
 ## Parallel processing of GAMs
 ```{r}
 
-varsStack <- stack()
-convStack <- stack()
-AUC.result <- list()
+# input 
 
 predict.to <- model.data$predict.to
 PA <- model.data$PA
@@ -109,34 +110,41 @@ natptsall <- model.data$natptsall
 pbgwhich <- model.data$pbg.which
 backall <- model.data$backall
 
-spp <- "h_destuctor"
+model.out <- che_model(spp = "h_destuctor", parallel = TRUE, model.data)
 
-parallel = TRUE
 
-if (parallel==TRUE){
+# varsStack <- stack()
+# convStack <- stack()
+# AUC.result <- list()
+# 
 
-require(parallel)
+# 
+# if (parallel==TRUE){
+# 
+# require(parallel)
+# 
+# n.cores <- detectCores() - 1
+# cl <- makeCluster(n.cores, type="FORK", methods=F)
+# clusterExport(cl=cl, varlist=c('predict.to', 'convStack', 'PA', 'PA2', 'w', 'natptsall', 'pbg.which', 'backall', 'AUC.result'))
+# clusterEvalQ(cl, {
+#   require(methods)
+#   require(AUC)
+#   require(dismo)
+#   require(mgcv)})
+# 
+# # Run models on the cluster (cl), for variables (j) using the runGams function...
+# test <- parLapply(cl, 12:19, runCHE)
+# stopCluster(cl)
+# } else{
+# 
+#   for (k in 12:19){
+#     runCHE(k)
+#     ## add list
+# }
+# 
+# }
 
-n.cores <- detectCores() - 1
-cl <- makeCluster(n.cores, type="FORK", methods=F)
-clusterExport(cl=cl, varlist=c('predict.to', 'convStack', 'PA', 'PA2', 'w', 'natptsall', 'pbg.which', 'backall', 'AUC.result'))
-clusterEvalQ(cl, {
-  require(methods)
-  require(AUC)
-  require(dismo)
-  require(mgcv)})
 
-# Run models on the cluster (cl), for variables (j) using the runGams function...
-test <- parLapply(cl, 12:19, runCHE)
-stopCluster(cl)
-} else{
-
-  for (k in 12:19){
-    runCHE(k)
-    ## add list
-}
-
-}
 ```
 ## Reconcile outputs
 
