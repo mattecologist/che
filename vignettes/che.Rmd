@@ -101,16 +101,16 @@ model.data <- prepare_data(rasters=bioclimall, mask_raster=nat_ras, predict.to=S
 
 # input 
 
-predict.to <- model.data$predict.to
-PA <- model.data$PA
-PA2 <- model.data$PA2
-pbg.which <- model.data$pbg.which
-w <- model.data$w
-natptsall <- model.data$natptsall
-pbgwhich <- model.data$pbg.which
-backall <- model.data$backall
+# predict.to <- model.data$predict.to
+# PA <- model.data$PA
+# PA2 <- model.data$PA2
+# pbg.which <- model.data$pbg.which
+# w <- model.data$w
+# natptsall <- model.data$natptsall
+# pbgwhich <- model.data$pbg.which
+# backall <- model.data$backall
 
-model.out <- che_model(spp = "h_destuctor", parallel = TRUE, model.data)
+model.out <- che_model(spp = "h_destuctor", parallel = TRUE, model.data=model.data)
 
 
 # varsStack <- stack()
@@ -157,10 +157,10 @@ convStack <- stack()
 varStack <- stack ()
 
 for (i in 1:8){
-  convStack <- stack(convStack, test[[i]][[1]])
-  varsStack <- stack(varsStack, test[[i]][[2]])
+  convStack <- stack(convStack, model.out[[i]][[1]])
+  varsStack <- stack(varsStack, model.out[[i]][[2]])
 
-  temp.AUC <- unlist(test[[i]][[3]])
+  temp.AUC <- unlist(model.out[[i]][[3]])
   AUC.result[[i]] <- temp.AUC
 
 }

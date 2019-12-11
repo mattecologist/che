@@ -142,3 +142,60 @@ prepare_data <- function(rasters = rasters,
   
   return(out_list)
 }
+
+
+che_model <- function(spp = "spp", 
+                      parallel = TRUE,
+                      model.data = model.data){
+  
+  #model.data <- lapply (model.data, list)
+  #create lists, unpack model data
+  varsStack <- stack()
+  convStack <- stack()
+  AUC.result <- list()
+  
+  
+
+  predict.to <- model.data$predict.to
+   PA <- model.data$PA
+   PA2 <- model.data$PA2
+   pbg.which <- model.data$pbg.which
+  
+   w <- model.data$w
+   natptsall <- model.data$natptsall
+   backall <- model.data$backall
+  
+  ### run models using runCHE function
+  if (parallel==TRUE){
+    
+    require(parallel)
+    
+    n.cores <- detectCores() - 1
+    cl <- makeCluster(n.cores, type="FORK", methods=F)
+    clusterExport(cl=cl, varlist=c('predict.to', 'convStack', 'PA', 'PA2', 'w', 'natptsall', 'pbg.which', 'backall', 'AUC.result', 'spp', 'varsStack'),
+                  envir=environment())
+    clusterEvalQ(cl, {
+      require(methods)
+      require(AUC)
+      require(dismo)
+      require(mgcv)})
+    
+    # Run models on the cluster (cl), for variables (j) using the runGams function...
+    test <- parLapply(cl, 12:19, runCHE)
+    stopCluster(cl)
+  } else{
+    
+    for (k in 12:19){
+      runCHE(k)
+      ## add list
+    }
+    
+  }
+}
+
+
+
+
+
+
+

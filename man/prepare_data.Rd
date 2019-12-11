@@ -24,7 +24,7 @@ prepare_data(
 
 \item{w.val}{Weighting value for background}
 
-\item{bg.sample}{Size of background samples (defaul 50000)}
+\item{bg.sample}{Size of background samples (default 50000)}
 }
 \value{
 A list of data objects to be used with che model.

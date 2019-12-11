@@ -13,5 +13,5 @@ runCHE(j)
 A \code{list} comprising two stacks of rasters
 }
 \description{
-Convex Hull Ensembles
+Core function for
 }
