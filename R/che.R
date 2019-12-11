@@ -72,11 +72,75 @@ runCHE <- function(j){
 #' @return A single layer
 #' @export
 
-sum.stack <- function(stackoflayers, keep_layers=keep_layers){
+sum_stack <- function(stackoflayers, keep_layers=keep_layers){
   x <- stack()
   for (i in keep_layers){
     x <- stack(x, stackoflayers[[i]])
   }
   x <- sum(x)/nlayers(x)
   return (x)
+}
+
+#' Prepare data for use in the CHE model
+#'
+#' @param rasters Stack of rasters that are bioclim variables and cover extent of study (global fine)
+#' @param mask_raster Background mask, usualyl created using \code{background_builder}
+#' @param predict.to Raster stack where the model will be predicted/ projected to
+#' @param spp.dist X & Y species points
+#' @param w.val Weighting value for background
+#' @param bg.sample Size of background samples (defaul 50000)
+#'
+#' @return A list of data objects to be used with che model.
+#' @export
+
+prepare_data <- function(rasters = rasters, 
+                         mask_raster = mask, 
+                         predict.to = predict.to, 
+                         spp.dist=spp.dist, 
+                         w.val=1.e-6,
+                         bg.sample = 50000){
+  
+  ## create a stack of predictors masked to training region
+  train.stack <- crop (rasters, mask_raster)
+  train.stack <- mask (train.stack, mask_raster)
+  
+  ## Rasterize the points to the same
+  train.dist <- rasterize (spp.dist, train.stack)
+  train.dist <- reclassify (train.dist, c(0, Inf, 1))
+  
+  #make a stack of layers masked to the rasterized distribution
+  bioclimPres <- mask (train.stack, train.dist)
+  
+  #turn this into a data.frame
+  natptsall <- as.data.frame(rasterToPoints(bioclimPres, xy=TRUE))
+  natptsall <- natptsall[complete.cases(natptsall),]
+  
+  ## keep all the presence points in the background (ignore P/A at this point)
+  backall <- as.data.frame(rasterToPoints(train.stack, xy=TRUE))
+  backall <- backall[complete.cases(backall),]
+  
+  if (length(backall[,1]) > bg.sample){
+    backall <- dplyr::sample_n(backall, bg.sample, replace=FALSE)
+  }
+  
+  # Create data.frames used for the modelling
+  pbg.env <- rbind(natptsall, backall)
+  pbg.env <- pbg.env[,3:ncol(pbg.env)]
+  pbg.which <- c(rep(1, nrow(natptsall)), rep(0, nrow(backall)))
+  spp.data <- data.frame(cbind(pbg.which, pbg.env))
+  PA <- pbg.which
+  PA2 <- as.factor (PA)
+  
+  ## background weighting
+  cell_size<-area(mask_raster, na.rm=TRUE, weights=FALSE)
+  cell_size<-cell_size[!is.na(cell_size)]
+  raster_area<-length(cell_size)*median(cell_size)
+  back.area <- raster_area
+  w <- rep(1.e-6, nrow(spp.data))
+  w[spp.data$pbg.which ==0] <- back.area / sum(spp.data$pbg.which == 0)
+  
+  out_list <- list(predict.to, PA, PA2, w, natptsall, pbg.which, backall)
+  names(out_list) <- c("predict.to", "PA", "PA2", "w", "natptsall", "pbg.which","backall")
+  
+  return(out_list)
 }

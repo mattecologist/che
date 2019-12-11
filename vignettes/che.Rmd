@@ -86,50 +86,11 @@ nat_ras <- background_builder(clim, terres, wrld_simpl, ref_rast = bioclimall[[1
 plot (nat_ras)
 ```
 
-This next bit is a whole lot of data formatting that can probably be trimmed down somewhat.
+Using the `che::prepare_data` function to prepare the data for the modelling process
 ```{r}
 
-## you'll need: bioclimall, nat_ras, SAfrica, clim
-
-## create a stack of predictors masked to training region
-predict.nat <- crop (bioclimall, nat_ras)
-predict.nat <- mask (predict.nat, nat_ras)
-
-## rasters where to predict to (these are the SAfrica ones from before)
-predict.to <- SAfrica
-
-## Rasterize the points to the same
-natraster <- rasterize (clim[,1:2], predict.nat)
-natraster <- reclassify (natraster, c(0, Inf, 1))
-
-bioclimPres <- mask (predict.nat, natraster)
-natptsall <- as.data.frame(rasterToPoints(bioclimPres, xy=TRUE))
-natptsall <- natptsall[complete.cases(natptsall),]
-
-
-## keep all the presence points in the background (ignore P/A at this point)
-backall <- as.data.frame(rasterToPoints(predict.nat, xy=TRUE))
-backall <- backall[complete.cases(backall),]
-
-if (length(backall[,1]) > 50000){
-  backall <- dplyr::sample_n(backall, 50000, replace=FALSE)
-}
-
-
-pbg.env <- rbind(natptsall, backall)
-pbg.env <- pbg.env[,3:ncol(pbg.env)]
-pbg.which <- c(rep(1, nrow(natptsall)), rep(0, nrow(backall)))
-spp.data <- data.frame(cbind(pbg.which, pbg.env))
-PA <- pbg.which
-PA2 <- as.factor (PA)
-
-## background weighting
-cell_size<-area(nat_ras, na.rm=TRUE, weights=FALSE)
-cell_size<-cell_size[!is.na(cell_size)]
-raster_area<-length(cell_size)*median(cell_size)
-back.area <- raster_area
-w <- rep(1.e-6, nrow(spp.data))
-w[spp.data$pbg.which ==0] <- back.area / sum(spp.data$pbg.which == 0)
+model.data <- prepare_data(rasters=bioclimall, mask_raster=nat_ras, predict.to=SAfrica, 
+             spp.dist=clim[,1:2], w.val=1.e-6, bg.sample = 50000)
 ```
 
 ## Parallel processing of GAMs
@@ -139,6 +100,14 @@ varsStack <- stack()
 convStack <- stack()
 AUC.result <- list()
 
+predict.to <- model.data$predict.to
+PA <- model.data$PA
+PA2 <- model.data$PA2
+pbg.which <- model.data$pbg.which
+w <- model.data$w
+natptsall <- model.data$natptsall
+pbgwhich <- model.data$pbg.which
+backall <- model.data$backall
 
 spp <- "h_destuctor"
 
@@ -196,7 +165,7 @@ keep_AUC <- AUC.result[AUC.result > quantile_thresh]
 keep_AUC <- tibble::rownames_to_column(as.data.frame(keep_AUC))
 
 
-q_CHE <- che::sum.stack(convStack,keep_AUC[,1])
+q_CHE <- sum_stack(convStack,keep_AUC[,1])
 
 plot (q_CHE)
 points(dist[,c("Longitude", "Latitude")], pch=20)
