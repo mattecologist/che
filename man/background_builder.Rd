@@ -4,13 +4,8 @@
 \alias{background_builder}
 \title{Background Builder for Species Distribution Modelling}
 \usage{
-background_builder(
-  distrib = distrib,
-  terres = terres,
-  wrld_simpl = wrld_simpl,
-  ref_rast = ref_rast,
-  no_biome = FALSE
-)
+background_builder(distrib = distrib, terres = terres,
+  wrld_simpl = wrld_simpl, ref_rast = ref_rast, no_biome = FALSE)
 }
 \arguments{
 \item{distrib}{Distribution data with "Longitude" and "Latitude" colnames}

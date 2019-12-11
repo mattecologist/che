@@ -2,6 +2,7 @@
 
 export(background_builder)
 export(bg_weighting)
+export(che_model)
 export(prepare_data)
 export(rb)
 export(rb.test)

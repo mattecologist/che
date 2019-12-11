@@ -99,56 +99,13 @@ model.data <- prepare_data(rasters=bioclimall, mask_raster=nat_ras, predict.to=S
 ## Parallel processing of GAMs
 ```{r}
 
-# input 
-
-# predict.to <- model.data$predict.to
-# PA <- model.data$PA
-# PA2 <- model.data$PA2
-# pbg.which <- model.data$pbg.which
-# w <- model.data$w
-# natptsall <- model.data$natptsall
-# pbgwhich <- model.data$pbg.which
-# backall <- model.data$backall
-
 model.out <- che_model(spp = "h_destuctor", parallel = TRUE, model.data=model.data)
-
-
-# varsStack <- stack()
-# convStack <- stack()
-# AUC.result <- list()
-# 
-
-# 
-# if (parallel==TRUE){
-# 
-# require(parallel)
-# 
-# n.cores <- detectCores() - 1
-# cl <- makeCluster(n.cores, type="FORK", methods=F)
-# clusterExport(cl=cl, varlist=c('predict.to', 'convStack', 'PA', 'PA2', 'w', 'natptsall', 'pbg.which', 'backall', 'AUC.result'))
-# clusterEvalQ(cl, {
-#   require(methods)
-#   require(AUC)
-#   require(dismo)
-#   require(mgcv)})
-# 
-# # Run models on the cluster (cl), for variables (j) using the runGams function...
-# test <- parLapply(cl, 12:19, runCHE)
-# stopCluster(cl)
-# } else{
-# 
-#   for (k in 12:19){
-#     runCHE(k)
-#     ## add list
-# }
-# 
-# }
 
 
 ```
 ## Reconcile outputs
 
-```{r}
+```{r fig.width= 5, fig.height=5}
 
 
 ## just reset these all first
@@ -158,7 +115,7 @@ varStack <- stack ()
 
 for (i in 1:8){
   convStack <- stack(convStack, model.out[[i]][[1]])
-  varsStack <- stack(varsStack, model.out[[i]][[2]])
+  varsStack <- stack(varStack, model.out[[i]][[2]])
 
   temp.AUC <- unlist(model.out[[i]][[3]])
   AUC.result[[i]] <- temp.AUC

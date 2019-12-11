@@ -199,6 +199,7 @@ che_model <- function(spp = "spp",
     }
     
   }
+   return(test)
 }
 
 
