@@ -143,7 +143,15 @@ prepare_data <- function(rasters = rasters,
   return(out_list)
 }
 
-
+#' Perform convex hulls models
+#'
+#' Wrapper function for the CHE modelling method
+#' @param spp Name of species
+#' @param parallel T/F flag for using parallel - must be TRUE for now
+#' @param model.data A model.data list of formatted data from \code{prepare_data} function.
+#' @return Modelled outputs
+#' @export
+#' 
 che_model <- function(spp = "spp", 
                       parallel = TRUE,
                       model.data = model.data){
