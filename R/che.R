@@ -151,7 +151,8 @@ prepare_data <- function(rasters = rasters,
 #' @param model.data A model.data list of formatted data from \code{prepare_data} function.
 #' @return Modelled outputs
 #' @export
-#' 
+#'
+#'  
 che_model <- function(spp = "spp", 
                       parallel = TRUE,
                       model.data = model.data){
@@ -202,6 +203,42 @@ che_model <- function(spp = "spp",
    return(test)
 }
 
+
+#' Reconcile CHE output
+#'
+#' Format and summarise the CHE model outputs
+#' @param model.out The model output
+#' @param AUC_threshold The AUC threshold to use to select layers to include
+#' @return A list of a single raster, the AUC scores, and the AUC value corresponding to the chosen threshold
+#' @export
+#'
+#'  
+che_out <- function(model.out=model.out, AUC_threshold=0.25){
+  
+  # Create some lists to store outputs
+  AUC.result <- list() # AUC result for the models
+  cheStack <- stack() # Stack of the CHE results
+  
+  for (i in 1:8){
+    cheStack <- stack(cheStack, model.out[[i]][[1]])
+    temp.AUC <- unlist(model.out[[i]][[3]])
+    AUC.result[[i]] <- temp.AUC
+  }
+  
+  AUC.result <- unlist(AUC.result)
+  
+  quantile_thresh <- (quantile (AUC.result, AUC_threshold))
+  keep_AUC <- AUC.result[AUC.result > quantile_thresh]
+  keep_AUC <- tibble::rownames_to_column(as.data.frame(keep_AUC))
+  
+  temp.out <- list(cheStack, keep_AUC[,1])
+  
+  temp.out <- list(sum_stack(temp.out[[1]], temp.out[[2]]), AUC.result, quantile_thresh)
+  
+  names(temp.out) <- c("predicted", "AUC.scores", "AUC.thresh")
+  
+  return(temp.out)
+}
 
 
 

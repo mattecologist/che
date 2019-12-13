@@ -4,9 +4,14 @@
 \alias{prepare_data}
 \title{Prepare data for use in the CHE model}
 \usage{
-prepare_data(rasters = rasters, mask_raster = mask,
-  predict.to = predict.to, spp.dist = spp.dist, w.val = 1e-06,
-  bg.sample = 50000)
+prepare_data(
+  rasters = rasters,
+  mask_raster = mask,
+  predict.to = predict.to,
+  spp.dist = spp.dist,
+  w.val = 1e-06,
+  bg.sample = 50000
+)
 }
 \arguments{
 \item{rasters}{Stack of rasters that are bioclim variables and cover extent of study (global fine)}

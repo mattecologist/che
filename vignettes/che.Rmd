@@ -107,33 +107,31 @@ model.out <- che_model(spp = "h_destuctor", parallel = TRUE, model.data=model.da
 
 ```{r fig.width= 5, fig.height=5}
 
+q_CHE <- che_out(model.out, 0.25)
 
-## just reset these all first
-AUC.result <- list()
-convStack <- stack()
-varStack <- stack ()
+```
 
-for (i in 1:8){
-  convStack <- stack(convStack, model.out[[i]][[1]])
-  varsStack <- stack(varStack, model.out[[i]][[2]])
+```{r}
+hist(q_CHE$AUC.scores)
+abline(v=q_CHE$AUC.thresh, col="red")
+```
+```{r}
 
-  temp.AUC <- unlist(model.out[[i]][[3]])
-  AUC.result[[i]] <- temp.AUC
-
-}
-
-
-AUC.result <- unlist(AUC.result)
-
-quantile_thresh <- (quantile (AUC.result, 0.25))
-keep_AUC <- AUC.result[AUC.result > quantile_thresh]
-keep_AUC <- tibble::rownames_to_column(as.data.frame(keep_AUC))
+library(tmap)
+library (classInt)
+library (viridis)
 
 
-q_CHE <- sum_stack(convStack,keep_AUC[,1])
+c_dist <- dist[,2:3]
+coordinates(c_dist) <- ~Longitude+Latitude
 
-plot (q_CHE)
-points(dist[,c("Longitude", "Latitude")], pch=20)
-
+tm_shape(q_CHE$predicted)+
+  tm_raster(palette=viridis(10), n=10,
+            style="pretty", title="Suitability")+
+  tm_shape(wrld_simpl)+
+  tm_borders(col="grey60", lwd=2)+
+  tm_shape(c_dist)+
+  tm_dots(size=0.3, col="red")+
+  tm_layout(legend.position=c("right", "BOTTOM"))
 ```
 
