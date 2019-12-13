@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Working example of using Convex Hull Ensembles and range bagging with the `che` package
+# Working example of using Convex Hull Ensembles with the `che` package
 ## Matt Hill 2019
 
 ```{r setup}
@@ -37,10 +37,10 @@ load("../data/insect_dist.Rdata")
 bioclimall <- raster::getData('worldclim', var='bio', res=2.5)
 ```
 
-
 # Background creation
 
-## Native range for this species is South Africa
+This is an important part of a presence-background type modelling. While the che is presence-only, we use GAMs to rank variable pairs based on relative performance, so the backround is used.
+In this example, the native range for the species is South Africa
 ```{r}
 e <- extent (10, 40, -35, -15)
 SAfrica <- crop (bioclimall, e)
@@ -51,6 +51,8 @@ SAfrica <- stack(unstack(SAfrica))
 ## Species data
 
 ### Halotydeus destructor
+
+This mite is native to South Africa
 ```{r fig.width=5, fig.height=5}
 dist <- insect_dist[insect_dist$Species =="h_destructor" & insect_dist$Range == "Native",]
 
@@ -110,11 +112,13 @@ model.out <- che_model(spp = "h_destuctor", parallel = TRUE, model.data=model.da
 q_CHE <- che_out(model.out, 0.25)
 
 ```
-
+The historgram shows the distribution of relative predictor pair performance, the redlie indicating where the bottom 25% would be excluded from.
 ```{r}
 hist(q_CHE$AUC.scores)
 abline(v=q_CHE$AUC.thresh, col="red")
 ```
+
+The resulting map can be plotted using your plotting package of choice, `tmap` is quite useful.
 ```{r}
 
 library(tmap)
@@ -134,4 +138,4 @@ tm_shape(q_CHE$predicted)+
   tm_dots(size=0.3, col="red")+
   tm_layout(legend.position=c("right", "BOTTOM"))
 ```
-
+Overall its done a reasonable job. There is now an opportunity here to test the model predictions using presence-only indices like the Boyce score etc.
