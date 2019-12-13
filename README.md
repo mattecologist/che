@@ -61,4 +61,4 @@ falls in the environmental limits across the given predictor variables.
 
 ## Example
 
-There will soon be a vignette demonstrating use of this package
+`vignette("che")` is a short tutorial on how to use the CHE functions in this package
