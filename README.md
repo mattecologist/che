@@ -19,6 +19,12 @@ You can install the development version from
 devtools::install_github("mattecologist/che")
 ```
 
+Note: this current version has mixed performance on different systems.
+The `parallel` package is used to cycle through the pairwise models, and
+I’ve only been testing it on Linux systems so far, so there may be a
+need to test this on Windows. Tested on 4-core and 12-core processors,
+the later gives much more stable performance.
+
 ## Background
 
 Species distribution models (SDMs) have become increasingly popular to
@@ -59,6 +65,7 @@ then averaged, and the resulting surface is a continuous scale from 0-1
 reflecting the level of certainty (closer to 1) that a given raster cell
 falls in the environmental limits across the given predictor variables.
 
-## Example
+## Tutorial
 
-`vignette("che")` is a short tutorial on how to use the CHE functions in this package
+`vignette("che")` is a short tutorial on how to use the CHE functions in
+this package

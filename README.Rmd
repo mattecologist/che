@@ -29,7 +29,7 @@ You can install the development version from [GitHub](https://github.com/) with:
 devtools::install_github("mattecologist/che")
 ```
 
-Note: this current version has mixed performance on different systems. I've only been testing it on linux systems so far, and on 4-core and 12-core processors. The later gives much more stable performance.
+Note: this current version has mixed performance on different systems. The `parallel` package is used to cycle through the pairwise models, and I've only been testing it on Linux systems so far, so there may be a need to test this on Windows. Tested on 4-core and 12-core processors, the later gives much more stable performance. 
 
 ## Background
 
@@ -57,8 +57,8 @@ results are then averaged, and the resulting surface is a continuous scale from 
 of certainty (closer to 1) that a given raster cell falls in the environmental limits across the given
 predictor variables.
 
-## Example
+## Tutorial
 
-There will soon be a vignette demonstrating use of this package
+`vignette("che")` is a short tutorial on how to use the CHE functions in this package
 
 
