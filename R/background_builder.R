@@ -40,7 +40,7 @@ background_builder <- function(distrib=distrib,
     biomespoly <- terres[terres$BIOME %in% biomes, ]
 
     #break down polygons
-    biomespoly <- gUnaryUnion(biomespoly)
+    biomespoly <- gUnaryUnion(biomespoly, checkValidity = "2L")
     projection(biomespoly) <- CRS('+proj=longlat')
 
     distpoly <- gIntersection (biomespoly, continentspoly, byid=TRUE)
