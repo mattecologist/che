@@ -1,6 +1,6 @@
 ---
-title: "che"
-output: rmarkdown::html_vignette
+title: "Working example of using Convex Hull Ensembles with the `che` package"
+output: pdf_document
 vignette: >
   %\VignetteIndexEntry{che}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Working example of using Convex Hull Ensembles with the `che` package
 ## Matt Hill 2019
 
 ```{r setup}

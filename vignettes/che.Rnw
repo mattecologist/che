@@ -1,0 +1,8 @@
+
+\documentclass{article}
+\usepackage{pdfpages}
+%\VignetteIndexEntry{hill2020che}
+
+\begin{document}
+\includepdf[pages=-, fitpaper=true]{che.pdf}
+\end{document}
