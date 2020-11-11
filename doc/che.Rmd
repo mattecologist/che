@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ## Matt Hill 2019
 
 ```{r setup}
-library(che)
+library (che)
 library (raster)
 library (maptools)
 library (rgeos)
@@ -39,9 +39,12 @@ bioclimall <- raster::getData('worldclim', var='bio', res=2.5)
 # Background creation
 
 This is an important part of a presence-background type modelling. While the che is presence-only, we use GAMs to rank variable pairs based on relative performance, so the backround is used.
+
+Emphasis here is that we are just looking for relative performance rather than absolute performance of a predictor pair. 
+
 In this example, the native range for the species is South Africa
 ```{r}
-e <- extent (10, 40, -35, -15)
+e <- extent (70, 135, 0, 40)
 SAfrica <- crop (bioclimall, e)
 #convert to a stack
 SAfrica <- stack(unstack(SAfrica))
@@ -53,7 +56,7 @@ SAfrica <- stack(unstack(SAfrica))
 
 This mite is native to South Africa
 ```{r fig.width=5, fig.height=5}
-dist <- insect_dist[insect_dist$Species =="h_destructor" & insect_dist$Range == "Native",]
+dist <- insect_dist[insect_dist$Species =="b_dorsalis" & insect_dist$Range == "Native",]
 
 sp_df <- cbind(as.data.frame(dist[,c("Longitude", "Latitude")]),raster::extract(SAfrica, as.data.frame(dist[,c("Longitude", "Latitude")])))
 plot (SAfrica[[1]])
@@ -100,7 +103,8 @@ model.data <- prepare_data(rasters=bioclimall, mask_raster=nat_ras, predict.to=S
 ## Parallel processing of GAMs
 ```{r}
 
-model.out <- che_model(spp = "h_destuctor", parallel = TRUE, model.data=model.data)
+model.out <- che_model(spp = "b_dorsalis", parallel = TRUE, model.data=model.data,
+                       n.cores = 2)
 
 
 ```

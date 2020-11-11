@@ -4,7 +4,12 @@
 \alias{che_model}
 \title{Perform convex hulls models}
 \usage{
-che_model(spp = "spp", parallel = TRUE, model.data = model.data)
+che_model(
+  spp = "spp",
+  parallel = TRUE,
+  model.data = model.data,
+  n.cores = detectCores() - 1
+)
 }
 \arguments{
 \item{spp}{Name of species}

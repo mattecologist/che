@@ -155,7 +155,8 @@ prepare_data <- function(rasters = rasters,
 #'  
 che_model <- function(spp = "spp", 
                       parallel = TRUE,
-                      model.data = model.data){
+                      model.data = model.data,
+                      n.cores = detectCores() - 1){
   
   #model.data <- lapply (model.data, list)
   #create lists, unpack model data
@@ -179,7 +180,7 @@ che_model <- function(spp = "spp",
     
     require(parallel)
     
-    n.cores <- detectCores() - 1
+  
     cl <- makeCluster(n.cores, type="FORK", methods=F)
     clusterExport(cl=cl, varlist=c('predict.to', 'convStack', 'PA', 'PA2', 'w', 'natptsall', 'pbg.which', 'backall', 'AUC.result', 'spp', 'varsStack'),
                   envir=environment())

@@ -112,7 +112,7 @@ model.out <- che_model(spp = "h_destuctor", parallel = TRUE, model.data=model.da
 q_CHE <- che_out(model.out, 0.25)
 
 ```
-The historgram shows the distribution of relative predictor pair performance, the redlie indicating where the bottom 25% would be excluded from.
+The histogram shows the distribution of relative predictor pair performance, the redlie indicating where the bottom 25% would be excluded from.
 ```{r}
 hist(q_CHE$AUC.scores)
 abline(v=q_CHE$AUC.thresh, col="red")
