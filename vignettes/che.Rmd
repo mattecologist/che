@@ -78,7 +78,7 @@ terres <- readShapePoly("official/wwf_terr_ecos.shp")
 
 ## Create a raster using biomes and native range points
 
-Using the `che::background_builder` function to set up sampling environment
+Using the `che::background_builder()` function to set up sampling environment
 
 ```{r fig.width= 5, fig.height=5}
 clim <- cbind(as.data.frame(dist[,c("Longitude", "Latitude")]),raster::extract(SAfrica, as.data.frame(dist[,c("Longitude", "Latitude")])))
@@ -112,13 +112,13 @@ model.out <- che_model(spp = "h_destuctor", parallel = TRUE, model.data=model.da
 q_CHE <- che_out(model.out, 0.25)
 
 ```
-The histogram shows the distribution of relative predictor pair performance, the redlie indicating where the bottom 25% would be excluded from.
+The histogram shows the distribution of relative predictor pair performance, the redline indicating where the bottom 25% would be excluded from.
 ```{r}
 hist(q_CHE$AUC.scores)
 abline(v=q_CHE$AUC.thresh, col="red")
 ```
 
-The resulting map can be plotted using your plotting package of choice, `tmap` is quite useful.
+The resulting map can be plotted using your plotting package of choice, `{tmap}` is quite useful.
 ```{r}
 
 library(tmap)

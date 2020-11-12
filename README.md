@@ -21,9 +21,9 @@ devtools::install_github("mattecologist/che")
 
 Note: this current version has mixed performance on different systems.
 The `parallel` package is used to cycle through the pairwise models, and
-I’ve only been testing it on Linux systems so far, so there may be a
-need to test this on Windows. Tested on 4-core and 12-core processors,
-the later gives much more stable performance.
+I’ve only been testing it on Linux and Mac systems so far, so there may
+be a need to test this on Windows. Tested on 4-core and 12-core
+processors, the later gives much more stable performance.
 
 ## Background
 
