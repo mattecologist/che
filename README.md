@@ -9,6 +9,11 @@
 
 Convex Hull Ensembles for Species Distribution Modelling
 
+A preprint exists at:
+
+Hill, M., Caley, P., Camac, J., Elith, J., & Barry, S. (2022). A novel method accounting for predictor uncertainty and model transferability of invasive species distribution models. BioRxiv : The Preprint Server for Biology. https://doi.org/10.1101/2022.03.14.483865
+
+
 ## Installation
 
 You can install the development version from
